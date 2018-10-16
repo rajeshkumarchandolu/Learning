@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "SampleSDL::Swarm::Swarm():Swarm.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "RAND_MAX">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "main:main.cpp">
+      </ContextState>
+      <ContextState
+         contextName = "Window::draw():Window.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "pixeldata">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
