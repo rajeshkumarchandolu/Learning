@@ -12,8 +12,8 @@
 
 namespace SampleSDL {
     Swarm :: Swarm(int width, int heigth){
-        GroupParticles = new Particle[1000];
-        for(int i=0 ;i<1000;i++){
+        GroupParticles = new Particle[5000];
+        for(int i=0 ;i<5000;i++){
 //            double randX = ((2.0*rand())/RAND_MAX)-1;
 //            double randY = ((2.0*rand())/RAND_MAX)-1;
             double randX = 0;

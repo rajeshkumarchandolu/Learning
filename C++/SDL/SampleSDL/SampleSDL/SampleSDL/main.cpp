@@ -34,21 +34,30 @@ int main(int argc, const char * argv[]) {
     
     int avg = (width+Height)/2;
     
+    Uint32 color =0xFFAABBFF;
+    
+    Uint8 red = color >> 24;
+    Uint8 Green = color >> 16;
+    Uint8 Blue = color >> 8;
+    
+    
     while(!isquit){
-        int shiftRequired = sin(timeelapsed*0.01)*128;
-       // cout << "the shift is :"<<shiftRequired << "\n";
-        timeelapsed ++;
-        window->clear();
+        timeelapsed =SDL_GetTicks();
+       // window->clear();
         
         SampleSDL::Particle *Group = window->swarm->getParticles();
         
         
-        
-        for( int i =0; i<1000;i++){
+        Uint8 red = (1+sin(timeelapsed*0.0001))*128;
+        Uint8 Green = (1+sin(timeelapsed*0.0002))*128;;
+        Uint8 Blue = (1+sin(timeelapsed*0.0003))*128;
+        for( int i =0; i<5000;i++){
             int XCoOrdinate = ((Group[i].x+1) * (avg/2)) +75;
             int YcoOrdinate = ((Group[i].y+1) * (avg/2)) -75;
              Group[i].increment(timeelapsed);
-            window->SetPixel(XCoOrdinate, YcoOrdinate, 0xFF, 0xFF, 0xFF);
+            
+            
+            window->SetPixel(XCoOrdinate, YcoOrdinate, red, Green, Blue);
            // std::cout <<"particle X:" << Group[i].x << "\t particle y :" << Group[i].y << std::endl;
             
         }
