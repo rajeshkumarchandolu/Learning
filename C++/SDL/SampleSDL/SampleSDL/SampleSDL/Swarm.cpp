@@ -19,6 +19,8 @@ namespace SampleSDL {
             double randX = 0;
             double randY = 0;
             GroupParticles[i].setXandYCoordinates(randX,randY);
+            GroupParticles[i].setSpeed(i);
+            GroupParticles[i].setAngle(i%360);
             std::cout << "\tx:"<<GroupParticles[i].x << "\t y : " <<GroupParticles[i].y << "\tindex :"<<i<<std::endl;
         }
         

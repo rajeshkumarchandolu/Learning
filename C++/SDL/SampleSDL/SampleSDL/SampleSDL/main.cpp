@@ -54,11 +54,9 @@ int main(int argc, const char * argv[]) {
         for( int i =0; i<5000;i++){
             int XCoOrdinate = ((Group[i].x+1) * (avg/2)) +75;
             int YcoOrdinate = ((Group[i].y+1) * (avg/2)) -75;
-             Group[i].increment(timeelapsed);
-            
-            
-            window->SetPixel(XCoOrdinate, YcoOrdinate, red, Green, Blue);
-           // std::cout <<"particle X:" << Group[i].x << "\t particle y :" << Group[i].y << std::endl;
+            Group[i].increment(timeelapsed);
+            window->SetPixel(XCoOrdinate, YcoOrdinate, red,Green,Blue);
+          
             
         }
         
@@ -69,6 +67,9 @@ int main(int argc, const char * argv[]) {
 //                window->SetPixel(height,width ,0xFF, 0xFF, 0xFF);
 //            }
 //        }
+        
+        //blur
+        window->blur();
         
         //draw
         window->draw();

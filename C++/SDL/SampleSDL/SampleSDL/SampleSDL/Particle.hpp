@@ -17,6 +17,8 @@ namespace SampleSDL {
         double x=0,y=0;
         double angle=0,speed=0;
         Particle();
+        void setSpeed(int speed);
+        void setAngle(int angle);
         void setXandYCoordinates(double x, double y){
             this->x = x;
             this->y = y;

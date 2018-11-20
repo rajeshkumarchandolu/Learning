@@ -11,10 +11,22 @@
 #include <math.h>
 SampleSDL::Particle::Particle(){
      angle = rand()%360;
-     speed  = (((2.0*rand())/RAND_MAX)-1)*0.0001 ;
+     //speed  = (((2.0*rand())/RAND_MAX)-1)*0.0001 ;
+}
+
+void SampleSDL::Particle::setSpeed(int speed){
+    this->speed = speed* 0.000005;
+    
+}
+void SampleSDL::Particle::setAngle(int angle){
+    this->angle = angle;
+    
 }
 
 void SampleSDL::Particle :: increment(int time){
+    
+    angle += 0.0016 *2;
+    
     this->x += speed*(cos(angle));
     this->y += speed*sin(angle);
     

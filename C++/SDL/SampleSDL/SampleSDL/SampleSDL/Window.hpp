@@ -32,6 +32,8 @@ class Window {
     void SetPixel(int x ,int y, Uint8 Red, Uint8 Green , Uint8 Blue );
     //draw
     void draw();
+    //Blur
+    void blur();
     //clear
     void clear();
     private :
@@ -39,7 +41,8 @@ class Window {
     SDL_Window *window =NULL;
     SDL_Renderer *renderer = NULL;
     SDL_Texture *texture = NULL;
-    Uint32 *pixeldata;
+    Uint32 *pixeldata,*tempPixelData;
+    
     
 };
 
