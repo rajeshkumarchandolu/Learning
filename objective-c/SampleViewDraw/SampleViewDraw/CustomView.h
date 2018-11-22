@@ -15,8 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CustomView : UIView
 
--(instancetype) initWith:(CGRect) frame;
-
 @end
 
 NS_ASSUME_NONNULL_END

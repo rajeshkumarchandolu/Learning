@@ -20,21 +20,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    cropView = [[CustomView alloc] initWith:CGRectMake(100, 100, 200, 100)];
+    cropView = [[CustomView alloc] initWithFrame:CGRectMake(100, 100, 300, 300)];
     cropView.backgroundColor = UIColor.greenColor;
     [[self view] addSubview:cropView];
     cropView.userInteractionEnabled = true;
     UIRotationGestureRecognizer *rotationalRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(onRotationPerformed:)];
     [cropView addGestureRecognizer:rotationalRecognizer];
+    
+    
+    
+    
+    
+    
  
 }
 
 -(void) onRotationPerformed:(UIRotationGestureRecognizer *) sender {
-    
-  
     cropView.transform = CGAffineTransformRotate(cropView.transform, sender.rotation);
     NSLog(@"sender rotation is :%f",sender.rotation);
-   // sender.rotation = 0.0;
+    sender.rotation = 0.0;
 }
 
 
