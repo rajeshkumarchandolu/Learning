@@ -72,29 +72,46 @@ typedef enum  {
     float width = bounds.size.width;
     float height = bounds.size.height;
     
-    if(point.x<0 || point.x>height|| point.y<0|| point.y>height){
-        return outside;
-    }
-    //each edge can be of width 10 pixels
     
-    //searching for the point can exists in topleft
-    if(point.x<=10 && point.x>=0 && point.y<=10 && point.y>=0){
-        return  Top_left;
-    }
-    //searching for the point can exists in topright
-    if(point.x<=width && point.x>=width-10 && point.y<=10 && point.y>=0){
-        return  Top_right;
-    }
-    //searching for the point can exists in bottomleft
-    if(point.x<=10 && point.x>=0 && point.y<=height && point.y>=height-10){
-        return  bottom_left;
-    }
-    //searching for the point can exists in topright
-    if(point.x<=width && point.x>=width-10 && point.y<=height && point.y>=height-10){
-        return  bottom_right;
+    //assuming the thumb radius is 10 pixels
+    CGFloat thumbRadius =0;
+    if((height+width)/10>10){
+         thumbRadius = (height+width)/10;
+    }else{
+         thumbRadius = 10;
     }
     
-    return Inside;
+    
+    if(point.x>thumbRadius && point.x<width-thumbRadius && point.y>thumbRadius && point.y < height-thumbRadius){
+        return Inside;
+    }
+    
+    //Top_left
+    CGPoint TopLeftPoint = CGPointMake(0, 0);
+    if( (point.x-TopLeftPoint.x)*(point.x-TopLeftPoint.x) + (point.y-TopLeftPoint.y) * (point.y-TopLeftPoint.y) <= thumbRadius * thumbRadius){
+        return Top_left;
+    }
+    
+    //Top_right
+    CGPoint TopRightPoint = CGPointMake(width, 0);
+    if( (point.x-TopRightPoint.x)*(point.x-TopRightPoint.x) + (point.y-TopRightPoint.y) * (point.y-TopRightPoint.y) <= thumbRadius * thumbRadius){
+        return Top_right;
+    }
+    
+    //bottom_left
+    CGPoint bottomleftPoint = CGPointMake(0, height);
+    if( (point.x-bottomleftPoint.x)*(point.x-bottomleftPoint.x) + (point.y-bottomleftPoint.y) * (point.y-bottomleftPoint.y) <= thumbRadius * thumbRadius){
+        return bottom_left;
+    }
+    
+    //bottom_right
+    CGPoint bottomRightPoint = CGPointMake(width, height);
+    
+    if( (point.x-bottomRightPoint.x)*(point.x-bottomRightPoint.x) + (point.y-bottomRightPoint.y) * (point.y-bottomRightPoint.y) <= thumbRadius * thumbRadius){
+        return bottom_right;
+    }
+    
+    return outside;
     
 }
 
@@ -103,9 +120,8 @@ typedef enum  {
     
     CGPoint croppedViewCoOrdinatePoint = CGPointMake(0, 0);
     
-    croppedViewCoOrdinatePoint.x = point.x-originX;
-    croppedViewCoOrdinatePoint.y = point.y-originX;
-    
+    croppedViewCoOrdinatePoint.x = point.x-CroppedView.frame.origin.x;
+    croppedViewCoOrdinatePoint.y = point.y-CroppedView.frame.origin.y;
     return croppedViewCoOrdinatePoint;
     
 }
@@ -114,16 +130,17 @@ typedef enum  {
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     
-    for(UITouch *touchpoint in touches){
-        Initialpositon =[touchpoint locationInView:self];
+        Initialpositon =[[touches anyObject] locationInView:self];
         Initialpositon = [self locationInCroppedViewOfPoint:Initialpositon];
-        TouchPositions touchPosition  = [self returnTouchPositionofPoint:Initialpositon ofViewBounds:CroppedView.bounds];
+        TouchPositions touchPosition  = [self returnTouchPositionofPoint:Initialpositon ofViewBounds:CroppedView.frame];
         
         switch (touchPosition) {
             case outside:
+                 NSLog(@"in the outside dragging position");
                 draggingPosition = outside;
                 break;
             case Inside:
+                 NSLog(@"in the inside dragging position");
                 draggingPosition = Inside;
                 break;
             case Top_right:
@@ -131,19 +148,21 @@ typedef enum  {
                 draggingPosition = Top_right;
                 break;
             case Top_left:
+                 NSLog(@"in the top_left dragging position");
                 draggingPosition = Top_left;
                 break;
             case bottom_left:
+                 NSLog(@"in the bottom_left dragging position");
                 draggingPosition = bottom_left;
                 break;
             case bottom_right:
+                 NSLog(@"in the bottom-right dragging position");
                 draggingPosition = bottom_right;
                 break;
             default:
                 break;
         }
-    }
-    
+   
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -155,7 +174,7 @@ typedef enum  {
     CGFloat updatedheight = draggingPoint.y - previouspoint.y;
     CGFloat updatedWidth = draggingPoint.x - previouspoint.x;
     
-    NSLog(@"the updatedHeight is :%f and updatedWidth is :%f",updatedheight,updatedWidth);
+//    NSLog(@"the updatedHeight is :%f and updatedWidth is :%f",updatedheight,updatedWidth);
     CGFloat newOriginX,newOriginY;
     switch (draggingPosition) {
         case Top_right:
@@ -165,24 +184,40 @@ typedef enum  {
             height = CroppedView.frame.size.height + (updatedheight * -1);
             //updating the widhth
             width = CroppedView.frame.size.width + updatedWidth;
-            [CroppedView setFrame:CGRectMake(newOriginX, newOriginY, width, height)];
+           
             break;
         case Top_left:
             newOriginX = draggingPoint.x;
             newOriginY = draggingPoint.y;
             height = CroppedView.frame.size.height - updatedheight;
             width = CroppedView.frame.size.width - updatedWidth;
-            [CroppedView setFrame:CGRectMake(newOriginX, newOriginY, width, height)];
             break;
         case bottom_left:
             newOriginX = draggingPoint.x;
             newOriginY = draggingPoint.y - CroppedView.frame.size.height;
+            height = CroppedView.frame.size.height + updatedheight;
+            width = CroppedView.frame.size.width - updatedWidth;
+            
             break;
         case bottom_right:
+            //no change in origins
+            newOriginX = CroppedView.frame.origin.x;
+            newOriginY = CroppedView.frame.origin.y;
+            
+            height = CroppedView.frame.size.height + updatedheight;
+            width = CroppedView.frame.size.width + updatedWidth;
+            
             break;
         default:
+            return;
             break;
     }
+    if(newOriginY >0 && newOriginY >0){
+      [CroppedView setFrame:CGRectMake(newOriginX, newOriginY, width, height)];
+    }
+    
+    
+    NSLog(@"updated origin X: %f Y:%f Width:%f Height:%f",CroppedView.frame.origin.x,CroppedView.frame.origin.y,CroppedView.frame.size.width,CroppedView.frame.size.height);
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
