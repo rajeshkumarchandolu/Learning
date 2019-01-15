@@ -21,6 +21,8 @@ int main(int argc, const char * argv[]) {
     
     int width =600;
     int Height = 300;
+    
+    Window testWindow ("sampleWindow",600,300);
   
     Window *window = new Window("sampleWindow",600,300);
     window->createRenderer();
